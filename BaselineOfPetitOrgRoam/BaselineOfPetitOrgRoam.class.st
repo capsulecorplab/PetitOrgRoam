@@ -21,5 +21,6 @@ BaselineOfPetitOrgRoam >> orgMode: spec [
 
 	spec
 		baseline: 'OrgMode'
-		with: [ spec repository: 'github://JurajKubelka/OrgMode/repository' ]
+		with: [ 
+		spec repository: 'github://capsulecorplab/OrgMode:main/repository' ]
 ]
