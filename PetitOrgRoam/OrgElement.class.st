@@ -158,30 +158,34 @@ OrgElement >> parseOrgHeadingItem: anOrgHeadingItem [
 	orgHeadingItemBodyAsArrayOfStrings := anOrgHeadingItem body collect: [ 
 		                                      :orgLine | orgLine line ].
 
-	"set id"
-	indexOfProperties := self
-		                     getIndexOf: ':PROPERTIES:'
-		                     from: 1
-		                     to: orgHeadingItemBodyAsArrayOfStrings size.
-	"((1 to: orgHeadingItemBodyAsArrayOfStrings size) 
+	"does body of orglines contain ':PROPERTIES:' ?"
+	(orgHeadingItemBodyAsArrayOfStrings includes: ':PROPERTIES:') 
+		ifTrue: [ "set id"
+			indexOfProperties := self
+				                     getIndexOf: ':PROPERTIES:'
+				                     from: 1
+				                     to: orgHeadingItemBodyAsArrayOfStrings size.
+			"((1 to: orgHeadingItemBodyAsArrayOfStrings size) 
 		                      select: [ :index | 
 			                      (orgHeadingItemBodyAsArrayOfStrings at: index)
 				                      asString = ':PROPERTIES:' ]) at: 1"
-	indexOfPropertiesEnd := self
-		                        getIndexOf: ':END:'
-		                        from: indexOfProperties + 1
-		                        to: orgHeadingItemBodyAsArrayOfStrings size.
-	propertiesAsArray := orgHeadingItemBodyAsArrayOfStrings
-		                     copyFrom: indexOfProperties
-		                     to: indexOfPropertiesEnd.
-	indexOfId := ((indexOfProperties to: indexOfPropertiesEnd) select: [ 
-		              :index | 
-		              '*ID*' match:
-			              (orgHeadingItemBodyAsArrayOfStrings at: index)
-				              asString ]) at: 1.
+			indexOfPropertiesEnd := self
+				                        getIndexOf: ':END:'
+				                        from: indexOfProperties + 1
+				                        to:
+				                        orgHeadingItemBodyAsArrayOfStrings size.
+			propertiesAsArray := orgHeadingItemBodyAsArrayOfStrings
+				                     copyFrom: indexOfProperties
+				                     to: indexOfPropertiesEnd.
+			indexOfId := ((indexOfProperties to: indexOfPropertiesEnd) select: [ 
+				              :index | 
+				              '*ID*' match:
+					              (orgHeadingItemBodyAsArrayOfStrings at: index)
+						              asString ]) at: 1.
 
-	id := ((orgHeadingItemBodyAsArrayOfStrings at: indexOfId) splitOn:
-		       ':ID:       ') second.
+			id := ((orgHeadingItemBodyAsArrayOfStrings at: indexOfId) splitOn:
+				       ':ID:       ') second ].
+
 
 	"set logbook"
 	(orgHeadingItemBodyAsArrayOfStrings includes: ':LOGBOOK:')
@@ -248,11 +252,17 @@ OrgElement >> parseOrgHeadingItem: anOrgHeadingItem [
 			totalDuration := sum ]
 		ifFalse: [ logbook := nil ].
 
-	bodyAsArrayOfStrings := orgHeadingItemBodyAsArrayOfStrings
-		                        copyFrom:
-		                        (orgHeadingItemBodyAsArrayOfStrings 
-			                         lastIndexOf: ':END:')
-		                        to: orgHeadingItemBodyAsArrayOfStrings size.
+	bodyAsArrayOfStrings := (orgHeadingItemBodyAsArrayOfStrings 
+		                         includes: ':END:')
+		                        ifTrue: [ 
+			                        orgHeadingItemBodyAsArrayOfStrings
+				                        copyFrom:
+				                        (orgHeadingItemBodyAsArrayOfStrings 
+					                         lastIndexOf: ':END:')
+				                        to:
+				                        orgHeadingItemBodyAsArrayOfStrings size ]
+		                        ifFalse: [ 
+		                        orgHeadingItemBodyAsArrayOfStrings ].
 	body := String streamContents: [ :stream | 
 		        bodyAsArrayOfStrings
 			        asStringOn: stream
