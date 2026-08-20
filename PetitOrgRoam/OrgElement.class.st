@@ -11,7 +11,10 @@ Class {
 		'children',
 		'linkedIds',
 		'backlinks',
-		'forwardlinks'
+		'forwardlinks',
+		'orgHeadingItemBodyAsArrayOfStrings',
+		'logbook',
+		'totalDuration'
 	],
 	#category : #PetitOrgRoam
 }
@@ -48,6 +51,18 @@ OrgElement >> children [
 	^ children
 ]
 
+{ #category : #converting }
+OrgElement >> convertOrgModeDateTimeToPharoDateTime: anOrgmodeDateTimeString [
+
+	"helper function for converting orgmode datetime to pharo datetime in UTC"
+
+	| dateTimeAsArray |
+	dateTimeAsArray := ((anOrgmodeDateTimeString splitOn: ' ') select: [ 
+		                    :item | item size > 3 ]) asOrderedCollection.
+	dateTimeAsArray add: 'T' afterIndex: 1.
+	^ ('' join: dateTimeAsArray , '-00:00') asDateAndTime
+]
+
 { #category : #accessing }
 OrgElement >> forwardlinks [
 
@@ -56,6 +71,16 @@ OrgElement >> forwardlinks [
 	"scope: class-variables  &  instance-variables"
 
 	^ forwardlinks
+]
+
+{ #category : #accessing }
+OrgElement >> getIndexOf: aRegexString from: startIndex to: endIndex [
+
+	"helper function for getting index of an item in orgHeadingItemBodyAsArrayOfStrings containing the specified string"
+
+	^ ((startIndex to: endIndex) select: [ :index | 
+		   aRegexString match: (orgHeadingItemBodyAsArrayOfStrings at: index) ]) 
+		  at: 1 
 ]
 
 { #category : #accessing }
@@ -100,6 +125,26 @@ OrgElement >> linkedIds [
 	^ linkedIds
 ]
 
+{ #category : #accessing }
+OrgElement >> logbook [
+
+	"comment stating purpose of instance-side method"
+
+	"scope: class-variables  &  instance-variables"
+
+	^ logbook
+]
+
+{ #category : #accessing }
+OrgElement >> orgHeadingItemBodyAsArrayOfStrings [
+
+	"comment stating purpose of instance-side method"
+
+	"scope: class-variables  &  instance-variables"
+
+	^ orgHeadingItemBodyAsArrayOfStrings
+]
+
 { #category : #parsing }
 OrgElement >> parseOrgHeadingItem: anOrgHeadingItem [
 
@@ -107,19 +152,25 @@ OrgElement >> parseOrgHeadingItem: anOrgHeadingItem [
 
 	"scope: class-variables  &  instance-variables"
 
-	| orgHeadingItemBodyAsArrayOfStrings "orgHeadingItemBody" "parsedorgHeadingItemBody" propertiesAsArray indexOfProperties indexOfPropertiesEnd indexOfId bodyAsArrayOfStrings |
+	| propertiesAsArray indexOfProperties indexOfPropertiesEnd indexOfId indexOfLogbook indexOfLogbookEnd logbookAsArrayOfStrings logbookAsArrayOfArrayOfDateAndTimeObjects sum bodyAsArrayOfStrings |
 	label := anOrgHeadingItem label label.
+
 	orgHeadingItemBodyAsArrayOfStrings := anOrgHeadingItem body collect: [ 
 		                                      :orgLine | orgLine line ].
-	indexOfProperties := ((1 to: orgHeadingItemBodyAsArrayOfStrings size) 
+
+	"set id"
+	indexOfProperties := self
+		                     getIndexOf: ':PROPERTIES:'
+		                     from: 1
+		                     to: orgHeadingItemBodyAsArrayOfStrings size.
+	"((1 to: orgHeadingItemBodyAsArrayOfStrings size) 
 		                      select: [ :index | 
 			                      (orgHeadingItemBodyAsArrayOfStrings at: index)
-				                      asString = ':PROPERTIES:' ]) at: 1.
-	indexOfPropertiesEnd := ((indexOfProperties to:
-	                          orgHeadingItemBodyAsArrayOfStrings size) 
-		                         select: [ :index | 
-		                         (orgHeadingItemBodyAsArrayOfStrings at:
-			                          index) = ':END:' ]) at: 1.
+				                      asString = ':PROPERTIES:' ]) at: 1"
+	indexOfPropertiesEnd := self
+		                        getIndexOf: ':END:'
+		                        from: indexOfProperties + 1
+		                        to: orgHeadingItemBodyAsArrayOfStrings size.
 	propertiesAsArray := orgHeadingItemBodyAsArrayOfStrings
 		                     copyFrom: indexOfProperties
 		                     to: indexOfPropertiesEnd.
@@ -129,13 +180,78 @@ OrgElement >> parseOrgHeadingItem: anOrgHeadingItem [
 			              (orgHeadingItemBodyAsArrayOfStrings at: index)
 				              asString ]) at: 1.
 
-	"id := (propertiesAsArray first splitOn: ':ID:       ') second."
 	id := ((orgHeadingItemBodyAsArrayOfStrings at: indexOfId) splitOn:
 		       ':ID:       ') second.
 
-	"body := parsedorgHeadingItemBody second."
+	"set logbook"
+	(orgHeadingItemBodyAsArrayOfStrings includes: ':LOGBOOK:')
+		ifTrue: [ 
+			indexOfLogbook := self
+				                  getIndexOf: ':LOGBOOK:'
+				                  from: indexOfPropertiesEnd
+				                  to: orgHeadingItemBodyAsArrayOfStrings size.
+			indexOfLogbookEnd := self
+				                     getIndexOf: ':END:'
+				                     from: indexOfLogbook
+				                     to: orgHeadingItemBodyAsArrayOfStrings size.
+			logbookAsArrayOfStrings := (anOrgHeadingItem body
+				                            copyFrom: indexOfLogbook + 1
+				                            to: indexOfLogbookEnd - 1) collect: [ 
+				                           :orgLine | orgLine line ].
+			logbookAsArrayOfArrayOfDateAndTimeObjects := logbookAsArrayOfStrings 
+				                                             collect: [ :entry | 
+					                                             | startDateTime endDateTime duration |
+					                                             startDateTime := self 
+						                                                              convertOrgModeDateTimeToPharoDateTime:
+						                                                              ((((entry 
+							                                                                  splitOn:
+							                                                                  'CLOCK: [') 
+							                                                                 at:
+							                                                                 2) 
+							                                                                splitOn:
+							                                                                ']') 
+							                                                               at:
+							                                                               1).
+					                                             endDateTime := self 
+						                                                            convertOrgModeDateTimeToPharoDateTime:
+							                                                            ((((((entry 
+								                                                                  splitOn:
+								                                                                  'CLOCK: [') 
+								                                                                 at:
+								                                                                 2) 
+								                                                                splitOn:
+								                                                                ']') 
+								                                                               at:
+								                                                               2) 
+								                                                              splitOn:
+								                                                              '[') 
+								                                                             at:
+								                                                             2).
+					                                             duration := endDateTime
+					                                                         -
+					                                                         startDateTime.
+					                                             Dictionary newFrom:
+						                                             { 
+							                                             ('startDateTime'
+							                                              -> startDateTime).
+							                                             ('endDateTime'
+							                                              -> endDateTime).
+							                                             ('duration'
+							                                              -> duration) } ].
+
+			logbook := logbookAsArrayOfArrayOfDateAndTimeObjects.
+
+			sum := 0 asDuration.
+			logbook do: [ :logbookEntry | 
+				sum := sum + (logbookEntry at: 'duration') ].
+
+			totalDuration := sum ]
+		ifFalse: [ logbook := nil ].
+
 	bodyAsArrayOfStrings := orgHeadingItemBodyAsArrayOfStrings
-		                        copyFrom: indexOfPropertiesEnd + 1
+		                        copyFrom:
+		                        (orgHeadingItemBodyAsArrayOfStrings 
+			                         lastIndexOf: ':END:')
 		                        to: orgHeadingItemBodyAsArrayOfStrings size.
 	body := String streamContents: [ :stream | 
 		        bodyAsArrayOfStrings
@@ -147,11 +263,9 @@ OrgElement >> parseOrgHeadingItem: anOrgHeadingItem [
 		             (item splitOn: '][') first ].
 
 	"recursive logic"
-	anOrgHeadingItem subheading items isNotEmpty ifTrue: [ 
-		anOrgHeadingItem subheading items do: [ :orgHeadingItem | 
-			((orgHeadingItem body collect: [ :orgLine | orgLine line ]) 
-				 includes: ':PROPERTIES:') ifTrue: [ 
-				children add: (self class new parseOrgHeadingItem: orgHeadingItem) ] ] ].
+	anOrgHeadingItem subheading items size > 0 ifTrue: [ 
+		anOrgHeadingItem subheading items do: [ :orgHeading | 
+			children add: (OrgElement new parseOrgHeadingItem: orgHeading) ] ].
 	children := children asArray.
 
 	^ self
@@ -163,4 +277,14 @@ OrgElement >> printOn: aStream [
 	"an instance of OrgElement should print its label"
 
 	aStream nextPutAll: self label
+]
+
+{ #category : #accessing }
+OrgElement >> totalDuration [
+
+	"comment stating purpose of instance-side method"
+
+	"scope: class-variables  &  instance-variables"
+
+	^ totalDuration
 ]
