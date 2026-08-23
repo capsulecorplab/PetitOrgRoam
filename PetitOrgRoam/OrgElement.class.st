@@ -134,6 +134,24 @@ OrgElement >> logbook [
 	^ logbook
 ]
 
+{ #category : 'accessing - view' }
+OrgElement >> logbookAsTable: logbookAsArrayOfArrayOfDateAndTimeObjects [
+
+	| rows columns columnNames cellValue|
+	rows := logbookAsArrayOfArrayOfDateAndTimeObjects size.
+	columnNames := logbookAsArrayOfArrayOfDateAndTimeObjects first keys.
+	columns := columnNames size.
+	cellValue := [ :column :row |
+		              (logbookAsArrayOfArrayOfDateAndTimeObjects at: row)
+			              at: (columnNames at: column) ].
+
+	^ PBArrayND new
+		  rows: rows
+		  columns: columns
+		  tabulate: cellValue
+		  columnNames: columnNames
+]
+
 { #category : 'accessing' }
 OrgElement >> orgHeadingItemBodyAsArrayOfStrings [
 
@@ -201,7 +219,8 @@ OrgElement >> parseLogbook: anOrgHeadingItem [
 						                                             ('duration'
 						                                              -> duration) } ].
 
-	logbook := logbookAsArrayOfArrayOfDateAndTimeObjects.
+	logbook := self logbookAsTable:
+		           logbookAsArrayOfArrayOfDateAndTimeObjects.
 
 	sum := 0 asDuration.
 	logbookAsArrayOfArrayOfDateAndTimeObjects do: [ :logbookEntry |
