@@ -56,14 +56,14 @@ OrgElement >> children [
 
 { #category : 'converting' }
 OrgElement >> convertOrgModeDateTimeToPharoDateTime: anOrgmodeDateTimeString [
-
 	"helper function for converting orgmode datetime to pharo datetime in UTC"
 
 	| dateTimeAsArray |
-	dateTimeAsArray := ((anOrgmodeDateTimeString splitOn: ' ') select: [ 
+	dateTimeAsArray := ((anOrgmodeDateTimeString splitOn: ' ') select: [
 		                    :item | item size > 3 ]) asOrderedCollection.
 	dateTimeAsArray add: 'T' afterIndex: 1.
-	^ ('' join: dateTimeAsArray , '-00:00') asDateAndTime
+	^ ('' join: dateTimeAsArray) asDateAndTime offset:
+		  DateAndTime localOffset asString
 ]
 
 { #category : 'accessing' }
