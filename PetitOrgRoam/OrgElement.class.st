@@ -14,7 +14,6 @@ Class {
 		'forwardlinks',
 		'orgHeadingItemBodyAsArrayOfStrings',
 		'logbook',
-		'totalDuration',
 		'indexOfProperties',
 		'indexOfPropertiesEnd'
 	],
@@ -220,13 +219,7 @@ OrgElement >> parseLogbook: anOrgHeadingItem [
 						                                              -> duration) } ].
 
 	logbook := self logbookAsTable:
-		           logbookAsArrayOfArrayOfDateAndTimeObjects.
-
-	sum := 0 asDuration.
-	logbookAsArrayOfArrayOfDateAndTimeObjects do: [ :logbookEntry |
-		sum := sum + (logbookEntry at: 'duration') ].
-
-	totalDuration := sum
+		           logbookAsArrayOfArrayOfDateAndTimeObjects
 ]
 
 { #category : 'parsing' }
@@ -314,10 +307,7 @@ OrgElement >> printOn: aStream [
 
 { #category : 'accessing' }
 OrgElement >> totalDuration [
+	"computation method to get sum total duration from logbook"
 
-	"comment stating purpose of instance-side method"
-
-	"scope: class-variables  &  instance-variables"
-
-	^ totalDuration
+	^ (self logbook at: 'duration') sum
 ]
