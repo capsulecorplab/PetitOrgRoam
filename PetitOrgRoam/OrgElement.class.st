@@ -164,7 +164,7 @@ OrgElement >> orgHeadingItemBodyAsArrayOfStrings [
 { #category : 'parsing' }
 OrgElement >> parseLogbook: anOrgHeadingItem [
 
-	| indexOfLogbook indexOfLogbookEnd logbookAsArrayOfStrings logbookAsArrayOfArrayOfDateAndTimeObjects sum |
+	| indexOfLogbook indexOfLogbookEnd logbookAsArrayOfStrings logbookAsArrayOfArrayOfDateAndTimeObjects |
 	indexOfLogbook := self
 		                  getIndexOf: ':LOGBOOK:'
 		                  from: indexOfPropertiesEnd
