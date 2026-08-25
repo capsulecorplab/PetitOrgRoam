@@ -7,7 +7,6 @@ Class {
 	#instVars : [
 		'label',
 		'id',
-		'contents',
 		'children',
 		'linkedIds',
 		'backlinks',
@@ -38,12 +37,6 @@ OrgElement >> backlinks [
 ]
 
 { #category : 'accessing' }
-OrgElement >> body [
-
-	^ body
-]
-
-{ #category : 'accessing' }
 OrgElement >> children [
 
 	"comment stating purpose of instance-side method"
@@ -51,6 +44,29 @@ OrgElement >> children [
 	"scope: class-variables  &  instance-variables"
 
 	^ children
+]
+
+{ #category : 'accessing - view' }
+OrgElement >> contents [
+	"return contents of org heading item body (without metadata, i.e., :PROPERTIES:, :LOGBOOK:, etc.)"
+
+	| bodyAsArrayOfStrings |
+	bodyAsArrayOfStrings := (orgHeadingItemBodyAsArrayOfStrings
+		                         includes: ':END:')
+		                        ifTrue: [
+				                        orgHeadingItemBodyAsArrayOfStrings
+					                        copyFrom:
+					                        (orgHeadingItemBodyAsArrayOfStrings
+						                         lastIndexOf: ':END:') + 1
+					                        to:
+					                        orgHeadingItemBodyAsArrayOfStrings size ]
+		                        ifFalse: [
+		                        orgHeadingItemBodyAsArrayOfStrings ].
+
+	^ String streamContents: [ :stream |
+			  bodyAsArrayOfStrings
+				  asStringOn: stream
+				  delimiter: String cr , String lf ]
 ]
 
 { #category : 'converting' }
@@ -228,7 +244,7 @@ OrgElement >> parseOrgHeadingItem: anOrgHeadingItem [
 
 	"scope: class-variables  &  instance-variables"
 
-	| propertiesAsArray indexOfId bodyAsArrayOfStrings |
+	| propertiesAsArray indexOfId |
 	label := anOrgHeadingItem label label.
 
 	orgHeadingItemBodyAsArrayOfStrings := anOrgHeadingItem body collect: [
@@ -268,25 +284,8 @@ OrgElement >> parseOrgHeadingItem: anOrgHeadingItem [
 		ifTrue: [ logbook := self parseLogbook: anOrgHeadingItem ]
 		ifFalse: [ logbook := nil ].
 
-	bodyAsArrayOfStrings := (orgHeadingItemBodyAsArrayOfStrings
-		                         includes: ':END:')
-		                        ifTrue: [
-				                        orgHeadingItemBodyAsArrayOfStrings
-					                        copyFrom:
-					                        (orgHeadingItemBodyAsArrayOfStrings
-						                         lastIndexOf: ':END:') + 1
-					                        to:
-					                        orgHeadingItemBodyAsArrayOfStrings size ]
-		                        ifFalse: [
-		                        orgHeadingItemBodyAsArrayOfStrings ].
 
-	"store contents of body (without metadata, i.e., :PROPERTIES:, :LOGBOOK:, etc.)"
-	contents := String streamContents: [ :stream |
-			            bodyAsArrayOfStrings
-				            asStringOn: stream
-				            delimiter: String cr , String lf ].
-
-	linkedIds := ((contents splitOn: '[[id:') select: [ :item |
+	linkedIds := ((self contents splitOn: '[[id:') select: [ :item |
 		              '*][*' match: item ]) collect: [ :item |
 		             (item splitOn: '][') first ].
 
