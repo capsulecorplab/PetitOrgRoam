@@ -274,7 +274,7 @@ OrgElement >> parseOrgHeadingItem: anOrgHeadingItem [
 				                        orgHeadingItemBodyAsArrayOfStrings
 					                        copyFrom:
 					                        (orgHeadingItemBodyAsArrayOfStrings
-						                         lastIndexOf: ':END:')
+						                         lastIndexOf: ':END:') + 1
 					                        to:
 					                        orgHeadingItemBodyAsArrayOfStrings size ]
 		                        ifFalse: [
