@@ -8,7 +8,6 @@ Class {
 		'label',
 		'id',
 		'children',
-		'linkedIds',
 		'backlinks',
 		'forwardlinks',
 		'orgHeadingItemBodyAsArrayOfStrings',
@@ -133,14 +132,13 @@ OrgElement >> label [
 	^ label
 ]
 
-{ #category : 'accessing' }
+{ #category : 'accessing - view' }
 OrgElement >> linkedIds [
+	"return linked id's from contents"
 
-	"comment stating purpose of instance-side method"
-
-	"scope: class-variables  &  instance-variables"
-
-	^ linkedIds
+	^ ((self contents splitOn: '[[id:') select: [ :item |
+		   '*][*' match: item ]) collect: [ :item |
+		  (item splitOn: '][') first ]
 ]
 
 { #category : 'accessing' }
@@ -283,11 +281,6 @@ OrgElement >> parseOrgHeadingItem: anOrgHeadingItem [
 	(orgHeadingItemBodyAsArrayOfStrings includes: ':LOGBOOK:')
 		ifTrue: [ logbook := self parseLogbook: anOrgHeadingItem ]
 		ifFalse: [ logbook := nil ].
-
-
-	linkedIds := ((self contents splitOn: '[[id:') select: [ :item |
-		              '*][*' match: item ]) collect: [ :item |
-		             (item splitOn: '][') first ].
 
 	"recursive logic"
 	anOrgHeadingItem subheading items size > 0 ifTrue: [
