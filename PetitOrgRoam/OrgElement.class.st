@@ -163,6 +163,7 @@ OrgElement >> orgHeadingItemBodyAsArrayOfStrings [
 
 { #category : 'parsing' }
 OrgElement >> parseLogbook: anOrgHeadingItem [
+	"parse logbook from an org heading item and return logbook as table"
 
 	| indexOfLogbook indexOfLogbookEnd logbookAsArrayOfStrings logbookAsArrayOfArrayOfDateAndTimeObjects |
 	indexOfLogbook := self
@@ -218,8 +219,7 @@ OrgElement >> parseLogbook: anOrgHeadingItem [
 						                                             ('duration'
 						                                              -> duration) } ].
 
-	logbook := self logbookAsTable:
-		           logbookAsArrayOfArrayOfDateAndTimeObjects
+	^ self logbookAsTable: logbookAsArrayOfArrayOfDateAndTimeObjects
 ]
 
 { #category : 'parsing' }
@@ -265,7 +265,7 @@ OrgElement >> parseOrgHeadingItem: anOrgHeadingItem [
 
 	"set logbook"
 	(orgHeadingItemBodyAsArrayOfStrings includes: ':LOGBOOK:')
-		ifTrue: [ self parseLogbook: anOrgHeadingItem ]
+		ifTrue: [ logbook := self parseLogbook: anOrgHeadingItem ]
 		ifFalse: [ logbook := nil ].
 
 	bodyAsArrayOfStrings := (orgHeadingItemBodyAsArrayOfStrings
