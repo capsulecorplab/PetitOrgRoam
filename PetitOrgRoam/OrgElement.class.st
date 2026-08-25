@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'label',
 		'id',
-		'body',
+		'contents',
 		'children',
 		'linkedIds',
 		'backlinks',
@@ -279,12 +279,14 @@ OrgElement >> parseOrgHeadingItem: anOrgHeadingItem [
 					                        orgHeadingItemBodyAsArrayOfStrings size ]
 		                        ifFalse: [
 		                        orgHeadingItemBodyAsArrayOfStrings ].
-	body := String streamContents: [ :stream |
-			        bodyAsArrayOfStrings
-				        asStringOn: stream
-				        delimiter: String cr , String lf ].
 
-	linkedIds := ((body splitOn: '[[id:') select: [ :item |
+	"store contents of body (without metadata, i.e., :PROPERTIES:, :LOGBOOK:, etc.)"
+	contents := String streamContents: [ :stream |
+			            bodyAsArrayOfStrings
+				            asStringOn: stream
+				            delimiter: String cr , String lf ].
+
+	linkedIds := ((contents splitOn: '[[id:') select: [ :item |
 		              '*][*' match: item ]) collect: [ :item |
 		             (item splitOn: '][') first ].
 
