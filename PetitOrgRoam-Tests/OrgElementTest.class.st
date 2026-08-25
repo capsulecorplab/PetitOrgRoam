@@ -1,10 +1,11 @@
 Class {
-	#name : #OrgElementTest,
-	#superclass : #TestCase,
-	#category : #'PetitOrgRoam-Tests'
+	#name : 'OrgElementTest',
+	#superclass : 'TestCase',
+	#category : 'PetitOrgRoam-Tests',
+	#package : 'PetitOrgRoam-Tests'
 }
 
-{ #category : #setup }
+{ #category : 'setup' }
 OrgElementTest >> orgDocumentAsString [
 	"comment stating purpose of instance-side method"
 	"scope: class-variables  &  instance-variables"	
@@ -214,9 +215,8 @@ used for fabricating components, s.a.
 '.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 OrgElementTest >> testParseOrgHeadingItem [
-
 	"comment stating purpose of instance-side method"
 
 	"scope: class-variables  &  instance-variables"
@@ -225,7 +225,7 @@ OrgElementTest >> testParseOrgHeadingItem [
 	"DONE peruse OrgMode tests for parsing Org syntax from string to create an OrgDocument object""TODO: use OrgMode parser to instantiate an OrgElement from an OrgHeadingItem"
 	orgDocument := OrgParser new parseString: self orgDocumentAsString.
 
-	orgHeadingItem := orgDocument heading items at: 1.
+	orgHeadingItem := orgDocument heading items first.
 
 	orgElement := OrgElement new parseOrgHeadingItem: orgHeadingItem.
 	"TODO: implement OrgRelation as an 'edge' between two OrgElements"
@@ -238,7 +238,7 @@ OrgElementTest >> testParseOrgHeadingItem [
 	self
 		assert: orgElement id
 		equals: '6cb64adf-948a-436c-9f8c-c07f14598bad'.
-	self assert: ('*collection of*' match: orgElement body) equals: true.
+	self assert: ('*collection of*' match: orgElement body).
 	self
 		assert: orgElement linkedIds first
 		equals: 'bec72b22-32eb-4bea-b42e-54a1cf5f9001'.
@@ -250,9 +250,8 @@ OrgElementTest >> testParseOrgHeadingItem [
 		equals: 'd0e7bb12-83fb-4cd5-9a4e-6e4967fc1100'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 OrgElementTest >> testParseOrgHeadingItemRecursively [
-
 	"comment stating purpose of instance-side method"
 
 	"scope: class-variables  &  instance-variables"
@@ -261,18 +260,16 @@ OrgElementTest >> testParseOrgHeadingItemRecursively [
 	"DONE peruse OrgMode tests for parsing Org syntax from string to create an OrgDocument object""TODO: use OrgMode parser to instantiate an OrgElement from an OrgHeadingItem"
 	orgDocument := OrgParser new parseString: self orgDocumentAsString.
 
-	orgHeadingItem := orgDocument heading items at: 1.
+	orgHeadingItem := orgDocument heading items first.
 
 	orgElement := OrgElement new parseOrgHeadingItem: orgHeadingItem.
 	"TODO: implement OrgRelation as an 'edge' between two OrgElements"
 	"TODO: implement OrgGraph from  End of statement expected ->a collection of OrgRelations"
 
 	self
-		assert: (orgElement children at: 1) label
+		assert: orgElement children first label
 		equals:
 		'Multiplanetary Homestead - Von Neumann Replicator :production:'.
-	self
-		assert: ('*Von Neumann universal constructor*' match:
-				 (orgElement children at: 1) body)
-		equals: true
+	self assert: ('*Von Neumann universal constructor*' match:
+			 orgElement children first body)
 ]
