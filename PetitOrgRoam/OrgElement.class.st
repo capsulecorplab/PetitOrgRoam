@@ -197,15 +197,14 @@ OrgElement >> parseLogbook: anOrgHeadingItem [
 				                                             | startDateTime endDateTime duration |
 				                                             startDateTime := self
 					                                                              convertOrgModeDateTimeToPharoDateTime:
-					                                                              ((((entry
-						                                                                  splitOn:
-						                                                                  'CLOCK: [')
-						                                                                 at:
-						                                                                 2)
-						                                                                splitOn:
-						                                                                ']')
-						                                                               at:
-						                                                               1).
+					                                                              (((entry
+						                                                                 splitOn:
+						                                                                 'CLOCK: [')
+						                                                                at:
+						                                                                2)
+						                                                               splitOn:
+						                                                               ']')
+						                                                              first.
 				                                             endDateTime := self
 					                                                            convertOrgModeDateTimeToPharoDateTime:
 						                                                            ((((((entry
