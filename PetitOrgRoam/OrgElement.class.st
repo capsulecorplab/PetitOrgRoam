@@ -76,7 +76,7 @@ OrgElement >> convertOrgModeDateTimeToPharoDateTime: anOrgmodeDateTimeString [
 	dateTimeAsArray := ((anOrgmodeDateTimeString splitOn: ' ') select: [
 		                    :item | item size > 3 ]) asOrderedCollection.
 	dateTimeAsArray add: 'T' afterIndex: 1.
-	^ ('' join: dateTimeAsArray) asDateAndTime offset:
+	^ ('' join: dateTimeAsArray) asDateAndTime translateTo:
 		  DateAndTime localOffset asString
 ]
 
