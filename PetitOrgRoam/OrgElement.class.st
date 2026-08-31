@@ -271,21 +271,21 @@ OrgElement >> parseOrgHeadingItem: anOrgHeadingItem [
 					              select: [ :index |
 						              '*ID*' match:
 							              (orgHeadingItemBodyAsArrayOfStrings at: index)
-								              asString ]) at: 1.
+								              asString ]) first.
 
 				id := ((orgHeadingItemBodyAsArrayOfStrings at: indexOfId)
 					       splitOn: ':ID:       ') second ].
 
 
 	"set logbook"
-	(orgHeadingItemBodyAsArrayOfStrings includes: ':LOGBOOK:')
-		ifTrue: [ logbook := self parseLogbook: anOrgHeadingItem ]
-		ifFalse: [ logbook := nil ].
+	logbook := (orgHeadingItemBodyAsArrayOfStrings includes: ':LOGBOOK:')
+		           ifTrue: [ self parseLogbook: anOrgHeadingItem ].
 
 	"recursive logic"
-	anOrgHeadingItem subheading items size > 0 ifTrue: [
-			anOrgHeadingItem subheading items do: [ :orgHeading |
-				children add: (OrgElement new parseOrgHeadingItem: orgHeading) ] ].
+	anOrgHeadingItem subheading items isNotEmpty ifTrue: [
+			children addAll:
+				(anOrgHeadingItem subheading items collect: [ :orgHeading |
+					 self class new parseOrgHeadingItem: orgHeading ]) ].
 	children := children asArray.
 
 	^ self
