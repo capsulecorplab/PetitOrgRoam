@@ -238,7 +238,7 @@ OrgElementTest >> testParseOrgHeadingItem [
 	self
 		assert: orgElement id
 		equals: '6cb64adf-948a-436c-9f8c-c07f14598bad'.
-	self assert: ('*collection of*' match: orgElement body).
+	self assert: ('*collection of*' match: orgElement contents).
 	self
 		assert: orgElement linkedIds first
 		equals: 'bec72b22-32eb-4bea-b42e-54a1cf5f9001'.
@@ -271,5 +271,5 @@ OrgElementTest >> testParseOrgHeadingItemRecursively [
 		equals:
 		'Multiplanetary Homestead - Von Neumann Replicator :production:'.
 	self assert: ('*Von Neumann universal constructor*' match:
-			 orgElement children first body)
+			 orgElement children first contents)
 ]
