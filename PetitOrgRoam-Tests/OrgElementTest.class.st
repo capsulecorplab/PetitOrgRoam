@@ -13,7 +13,7 @@ OrgElementTest >> orgDocumentAsString [
 	^ ':PROPERTIES:
 :ID:       3fdb300f-97d5-48e4-a89e-b6154c2aa5ab
 :END:
-#+title: Multiplanetary Homestead - Solarpunk Construction Set
+#+title: Planetary Homestead - Solarpunk Construction Set
 
 a minimal collection of [[id:ba869927-e374-437c-8b41-a43c4e5cb132][OSHW]] products and tools for constructing:
 - greenhabs
@@ -22,7 +22,7 @@ a minimal collection of [[id:ba869927-e374-437c-8b41-a43c4e5cb132][OSHW]] produc
 - science laboratories
 - observatories
 
-* [#A] Multiplanetary Homestead - RepRap toolkit         :production:package:
+* [#A] Planetary Homestead - RepRap toolkit         :production:package:
 :PROPERTIES:
 :ID:       6cb64adf-948a-436c-9f8c-c07f14598bad
 :END:
@@ -33,7 +33,7 @@ capable of producing components for the [[id:bf5334f2-0701-4838-a50f-72e900b01ce
 # see also
 - [[id:d0e7bb12-83fb-4cd5-9a4e-6e4967fc1100][Von Neumann universal constructor]]
 
-** Multiplanetary Homestead - Von Neumann Replicator :production:
+** Planetary Homestead - Von Neumann Replicator :production:
 :PROPERTIES:
 :ID:       8529f10d-98f4-4623-8428-61ef35edb29c
 :END:
@@ -71,7 +71,7 @@ used to assemble other tools/machines in the [[id:6cb64adf-948a-436c-9f8c-c07f14
 - [[id:538f645a-d386-4789-8197-ab5a2ecfea2d][Voron vs Prusa]]
 - [[id:f470b8aa-9e91-4f31-a956-4374f1b50b42][tradestudy of RepRap 3D printers]]
 
-** Multiplanetary Homestead - universal core-xy motion system :intermediateproducts:
+** Planetary Homestead - universal core-xy motion system :intermediateproducts:
 :PROPERTIES:
 :ID:       719bcd8a-d8bb-42cd-87ff-ae603ace2325
 :END:
@@ -81,7 +81,7 @@ used to assemble other tools/machines in the [[id:6cb64adf-948a-436c-9f8c-c07f14
 # see also
 - [[id:00844d7f-5f44-4dd2-8807-59fe781f711f][OSE - Universal CNC axis]]
 
-** Multiplanetary Homestead - potato starch            :intermediateproducts:
+** Planetary Homestead - potato starch            :intermediateproducts:
 :PROPERTIES:
 :ID:       93cfe911-e8e7-49b5-93ea-8a259c4203c5
 :END:
@@ -92,7 +92,7 @@ used to assemble other tools/machines in the [[id:6cb64adf-948a-436c-9f8c-c07f14
 # tools
 - juicer
 
-** Multiplanetary Homestead - shredded PLA plastic     :intermediateproducts:
+** Planetary Homestead - shredded PLA plastic     :intermediateproducts:
 :PROPERTIES:
 :ID:       8b1f6311-0384-4c51-bce6-c37779eaf49f
 :END:
@@ -116,7 +116,7 @@ used to assemble other tools/machines in the [[id:6cb64adf-948a-436c-9f8c-c07f14
 - [[id:49d68e9e-bd3b-49ff-9243-f22a41713144][vacuum pump]]
 - [[id:394d2acf-6a7e-4d4c-8a81-ada29385d571][plastic shredder]]
 
-** Multiplanetary Homestead - PLA 3d printer filament  :intermediateproducts:
+** Planetary Homestead - PLA 3d printer filament  :intermediateproducts:
 :PROPERTIES:
 :ID:       9d2751ff-1aae-40a6-9050-906eae3be647
 :END:
@@ -127,7 +127,7 @@ used to assemble other tools/machines in the [[id:6cb64adf-948a-436c-9f8c-c07f14
 # tools
 - [[id:da43b4e8-80e7-4ea9-bdce-cd9e76c20e5e][3D printer filament extruder]]
 
-** Multiplanetary Homestead - stepper motor            :intermediateproducts:
+** Planetary Homestead - stepper motor            :intermediateproducts:
 :PROPERTIES:
 :ID:       35995755-2ddc-473a-954b-c92b620df483
 :END:
@@ -136,7 +136,7 @@ used to assemble other tools/machines in the [[id:6cb64adf-948a-436c-9f8c-c07f14
 - [[id:26ecea03-6956-4d34-a1cf-186a51a68b43][generic (CNC lathed and/or CNC milled) (304?) stainless steel parts]]
 - [[id:cd8230b8-2517-4231-8fd1-dda5a54b3cfb][copper wire]]
 
-** [#B] Multiplanetary Homestead - plastic shredder               :logistics:
+** [#B] Planetary Homestead - plastic shredder               :logistics:
 :PROPERTIES:
 :ID:       394d2acf-6a7e-4d4c-8a81-ada29385d571
 :END:
@@ -144,7 +144,7 @@ used to assemble other tools/machines in the [[id:6cb64adf-948a-436c-9f8c-c07f14
 # see also
 - [[id:ff338185-7916-4530-81c4-59338f7ac7a0][DIY plastic shredder]]
 
-** [#C] Multiplanetary Homestead - 3D printer filament extruder  :production:
+** [#C] Planetary Homestead - 3D printer filament extruder  :production:
 :PROPERTIES:
 :ID:       da43b4e8-80e7-4ea9-bdce-cd9e76c20e5e
 :END:
@@ -152,7 +152,7 @@ used to assemble other tools/machines in the [[id:6cb64adf-948a-436c-9f8c-c07f14
 # parts
 - non-helical parts [[id:26ecea03-6956-4d34-a1cf-186a51a68b43][generic (EDM lathed) (304?) stainless steel part]] or [[id:16cd7364-811b-4dca-a596-23ad337766d4][generic (lost PLA-casted or resin-casted) stainless steel]] or [[id:d90fb11b-b812-491d-aa16-2c78fa2031a9][(PLA-casted or resin-casted) aluminum]] or [[id:8c745a4a-b89d-45ee-b141-8c11ff7f7ba5][die-casted aluminum part]]
 - helical parts (s.a., the auger) [[id:26ecea03-6956-4d34-a1cf-186a51a68b43][generic (EDM lathed) (304?) stainless steel part]] or [[id:16cd7364-811b-4dca-a596-23ad337766d4][generic (lost PLA-casted or resin-casted) stainless steel]] or [[id:d90fb11b-b812-491d-aa16-2c78fa2031a9][(PLA-casted or resin-casted) aluminum]] or [[id:8c745a4a-b89d-45ee-b141-8c11ff7f7ba5][die-casted aluminum part]]
-- [[id:35995755-2ddc-473a-954b-c92b620df483][Multiplanetary Homestead - stepper motor]]
+- [[id:35995755-2ddc-473a-954b-c92b620df483][Planetary Homestead - stepper motor]]
 
 # tools
 - [[id:f2ab587d-2380-42e3-9f5b-2761e4751dbb][generic hand tools]]
@@ -161,7 +161,7 @@ used to assemble other tools/machines in the [[id:6cb64adf-948a-436c-9f8c-c07f14
 - [[id:2ec5efcb-4dfd-429a-a3e4-88e7aa5ae433][ARTME 3D (extruder)]]
 - [[id:7fef62da-04dc-4d30-994a-1de7e6e2f2e7][DIY 3D printer filament extruder]]
 
-** Archived Multiplanetary Homestead - RepRap CNC mill           :production:
+** Archived Planetary Homestead - RepRap CNC mill           :production:
 CLOSED: [2025-05-14 Wed 10:23]
 :PROPERTIES:
 :ID:       6a713136-fbdd-4935-a226-ad3efa845cce
@@ -187,7 +187,7 @@ can be used as a [[id:5071891e-f3fc-4765-a881-862ed46a4ea4][CNC mill]] or [[id:a
 - [[id:36fa9ca0-e3a2-44b2-a803-2dd52cba16f6][DIY CNC mill]]
 - [[id:1455aacd-6024-424a-8a9b-07f3dbbdebf9][tradestudy of DIY CNC routers]]
 
-** [#C] Multiplanetary Homestead - Von Neumann Replicator (EDM machine/lathe configuration)
+** [#C] Planetary Homestead - Von Neumann Replicator (EDM machine/lathe configuration)
 :PROPERTIES:
 :ID:       19a05267-0296-4c03-9f7a-dd9ad775178f
 :END:
@@ -234,7 +234,7 @@ OrgElementTest >> testParseOrgHeadingItem [
 	self
 		assert: orgElement label
 		equals:
-		'[#A] Multiplanetary Homestead - RepRap toolkit         :production:package:'.
+		'[#A] Planetary Homestead - RepRap toolkit         :production:package:'.
 	self
 		assert: orgElement id
 		equals: '6cb64adf-948a-436c-9f8c-c07f14598bad'.
@@ -268,8 +268,7 @@ OrgElementTest >> testParseOrgHeadingItemRecursively [
 
 	self
 		assert: orgElement children first label
-		equals:
-		'Multiplanetary Homestead - Von Neumann Replicator :production:'.
+		equals: 'Planetary Homestead - Von Neumann Replicator :production:'.
 	self assert: ('*Von Neumann universal constructor*' match:
 			 orgElement children first contents)
 ]
